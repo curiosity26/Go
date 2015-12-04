@@ -38,9 +38,11 @@ The `add` function takes one parameters and it is the work object as described a
 
 The `run` is a decorator function for `add` that takes only an injectable function as a parameter. This function will create a new work object with a `$delay` of 0 and set the injectable function you've provided as the `$run` parameter.
 
-### next()
+### next([err])
 
-`next()` is a function offered in workflows that allows you to control when the next workflow is triggered or when the success and finally triggers are fired. `next()` does not block further execution of your workflow so next can be bound to DOM events, timers or placed in strategic areas of you code. If `next()` is passed a value, it will trigger an error and will stop Go, but will not stop the current workflow. You will have to execute `return next(err)` to stop Go and the workflow.
+`next` is an injectable variable offered in workflows that allows you to control when the next workflow is triggered or when the success and finally triggers are fired. `next()` does not block further execution of your workflow so next can be bound to DOM events, timers or placed in strategic areas of you code. If `next()` is passed a value, it will trigger an error and will stop Go, but will not stop the current workflow. You will have to execute `return next(err)` to stop Go and the workflow.
+
+*Example*
 
 ```JavaScript
 var go = Go();
