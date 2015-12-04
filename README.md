@@ -11,7 +11,36 @@ Go instances are also Promises. By using the functions `then(success, failure)` 
 
 ## Basic Usage
 
-Using Go is very easy. You don't need to preconfigure anything to get started:
+Using Go is very easy. You don't need to preconfigure anything to get started. The only thing you need to know is how to register 'work'.
+
+Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run` is the injectable function that does the work and `$delay` is the number of milliseconds you would like to wait before the workflow is run after it is triggered.
+
+*Example Work Object*
+
+```JSON
+{
+    $run: ['next', function(next) {
+        // Do Something Here
+        // Now trigger the next work object
+        next();
+    }],
+    $delay: 0
+}
+```
+
+There are two methods to register work: `add` and `run`.
+
+### add()
+
+The `add` function takes one parameters and it is the work object as described above.
+
+### run()
+
+The `run` is a decorator function for `add` that takes only an injectable function as a parameter. This function will create a new work object with a `$delay` of 0 and set the injectable function you've provided as the `$run` parameter.
+
+### next()
+
+`next()` is a function offered in workflows that allows you to control when the next workflow is triggered or when the success and finally triggers are fired. `next()` does not block further execution of your workflow so next can be bound to DOM events, timers or placed in strategic areas of you code. If `next()` is passed a value, it will trigger an error and will stop Go, but will not stop the current workflow. You will have to execute `return next(err)` to stop Go and the workflow.
 
 ```JavaScript
 var go = Go();
@@ -37,7 +66,17 @@ go.run(['next', function(next) {
             test(); // Look in your console
         }],
         $delay: 1000
-    });
+    })
+    .then(function() {
+        console.log("Yay! It ran good");
+    }, function($e) {
+        console.log("It ran badded.", $e);
+    })
+    .finally(['$go', function($go) {
+        console.log("For better or for worse, I am called when all the work is done.);
+        console.log("Also, $go is an injectable value equal the current instantiation of Go");
+        console.log("And yes, callbacks are also injectable functions");
+    }]);
     
 // Go will not start until you run this
 go.start();
