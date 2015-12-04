@@ -46,19 +46,12 @@ The `run` is a decorator function for `add` that takes only an injectable functi
 var go = Go();
 
 go.run(['next', function(next) {
-    // next is a function offered in workflows 
-    // that allows you to control when the next workflow is triggered
-    // or when the success and finally triggers are fired
-    // next does not block further execution of your workflow
-    // so next can be bound to DOM events, timers or placed in strategic areas of you code.
-    // If next is passed a value, it will trigger an error and will stop Go
-    
-    if (confirm("Should we continue?")) {
-        next();
-    } else {
-        next("This will trigger an error, preventing future work calls and trigger a failure callback, if configured");
-    }
-}])
+        if (confirm("Should we continue?")) {
+            next();
+        } else {
+            next("This will trigger an error, preventing future work calls and trigger a failure callback, if configured");
+        }
+    }])
     .value('test', function() { console.log("I'm testing you");})
     .add({
         $run: ['test', function(test) {
