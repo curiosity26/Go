@@ -73,7 +73,7 @@ go.run(['next', function(next) {
         console.log("It ran badded.", $e);
     })
     .finally(['$go', function($go) {
-        console.log("For better or for worse, I am called when all the work is done.);
+        console.log("For better or for worse, I am called when all the work is done.");
         console.log("Also, $go is an injectable value equal the current instantiation of Go");
         console.log("And yes, callbacks are also injectable functions");
     }]);
