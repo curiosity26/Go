@@ -17,7 +17,7 @@ Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run
 
 *Example Work Object*
 
-```JSON
+```JavaScript
 {
     $run: ['next', function(next) {
         // Do Something Here
