@@ -1,0 +1,23 @@
+{
+  "name": "go",
+  "version": "1.0.0",
+  "description": "A procedural automation workflow framework",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "curiosity26/go",
+  "keywords": [
+    "automation",
+    "procedural",
+    "batch",
+    "workflow"
+  ],
+  "author": "Alex Boyce <curiosity26@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+      "gulp" : "*",
+      "gulp-uglify" : "*",
+      "gulp-rename" : "*",
+      "gulp-replace": "*"
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Go Test</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="go.js"></script>
+        <script type="text/javascript">
+            Go.Module('MyModule', [])
+                .constant('test', function() {
+                    console.log("Test is called.")
+                    });
+            
+            Go.Module('OtherModule', ['MyModule'])
+                .service('TestFactory', ['test', function(test) {
+                        var date = new Date().getTime();
+                        console.log('date', date);
+                        return test;
+                    }]);
+            
+            var go = Go(['OtherModule']);
+            go
+                .add({$run : ['TestFactory', function(TestFactory) {
+                                 setTimeout(TestFactory, 1000);
+                    console.log('From TF');
+                             }], 
+                      $delay: 1000
+                     })
+                .run(['TestFactory', '$go', function(test, $go) {
+                    test();
+                }])
+                .then(function() {console.log("success", this)}, function(e) {throw e})
+                .finally(function() {console.log("done")})
+                .start();
+        </script>
+    </body>
+</html>
