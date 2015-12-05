@@ -187,30 +187,30 @@ The current Go instance is made available as an injectable using the name `$go`.
 Functions can be injected with objects in three different ways (in order of preference):
 
 1. An array of the names of the objects to inject and the last item in the array is the function to inject into:
-
-```JavaScript
-['$injector', '$provide', function($injector, $provider) {
-    // Do stuff here
-}]
-```
+  
+  ```JavaScript
+  ['$injector', '$provide', function($injector, $provider) {
+      // Do stuff here
+  }]
+  ```
 
 2. The `$inject` property set with an array of names:
+  
+  ```JavaScript
+  var myFunction = function($injector, $provide) {
+      // Do something
+  };
 
-```JavaScript
-var myFunction = function($injector, $provide) {
-    // Do something
-};
-
-myFunction.$inject = ['$injector', '$provide'];
-```
+  myFunction.$inject = ['$injector', '$provide'];
+  ```
 
 3. Lastly, the `$injector` can infer the names from the function itself. **This will not work on minifed scripts**
-
-```JavaScript
-var myFunction = function($injector, $provide) {
-    // Do more cool stuff, but not if you're going to minify this. Tsk tsk
-}
-```
+  
+  ```JavaScript
+  var myFunction = function($injector, $provide) {
+     // Do more cool stuff, but not if you're going to minify this. Tsk tsk
+  }
+  ```
 
 ### Modules
 
