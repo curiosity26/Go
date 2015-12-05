@@ -121,19 +121,29 @@ The way dependency injection works is: objects can be injected into a function o
 
 Like Angular, Go makes its DI components available for injection.
 
-####$injector
+#### $injector
 
 The `$injector` is the service in which all providers, services, factories, values, constants and decorators are registered within a Go instance. The `$injector` has the following methods:
 
-- `get(name, [caller])`: this method gets the instance of the service. The `caller` parameter is optional and is the calling function for use for error tracing.
+##### get(name, [caller])
 
-- `invoke(fn, [self], [locals])`: invoke is the function that creates the usable instance from an injectable function. `self` becomes `this` in the `fn` function. `locals` is a HashMap of variable names and values that override the `$injector`'s values for this invocation.
+This method gets the instance of the service. The `caller` parameter is optional and is the calling function for use for error tracing.
 
-- `has(name)`: determines if the `$injector` has the `name` service
+##### invoke(fn, [self], [locals])
 
-- `instantiate(Type, [locals])`: `Type` is an annotated constructor function. The `instantiate()` function creates a new instance of the `Type` constructor and returns it.
+`invoke()` is the function that creates the usable instance from an injectable function. `self` becomes `this` in the `fn` function. `locals` is a HashMap of variable names and values that override the `$injector`'s values for this invocation.
 
-- `annotate(fn, [strictDi])`: this method returns an array of the names which the `fn` function requires for injection.
+##### has(name)
+
+A function to determine if the `$injector` has the `name` service.
+
+##### instantiate(Type, [locals])
+
+`Type` is an annotated constructor function. The `instantiate()` function creates a new instance of the `Type` constructor and returns it.
+
+##### annotate(fn, [strictDi])
+
+This method returns an array of the names which the `fn` function requires for injection.
 
 
 ####$provide
