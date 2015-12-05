@@ -28,15 +28,15 @@ Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run
 }
 ```
 
-There are two methods to register work: `add` and `run`.
+There are two methods to register work: `add()` and `run()`.
 
 ### add()
 
-The `add` function takes one parameters and it is the work object as described above.
+The `add()` function takes one parameters and it is the work object as described above.
 
 ### run()
 
-The `run` is a decorator function for `add` that takes only an injectable function as a parameter. This function will create a new work object with a `$delay` of 0 and set the injectable function you've provided as the `$run` parameter.
+The `run()` is a decorator function for `add()` that takes only an injectable function as a parameter. This function will create a new work object with a `$delay` of 0 and set the injectable function you've provided as the `$run` parameter.
 
 ### next([err])
 
