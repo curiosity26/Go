@@ -13,7 +13,7 @@ Go instances are also Promises. By using the functions `then(success, failure)` 
 
 Using Go is very easy. You don't need to preconfigure anything to get started. The only thing you need to know is how to register 'work'.
 
-Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run` is the injectable function that does the work and `$delay` is the number of milliseconds you would like to wait before the workflow is run after it is triggered.
+Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run` is the [injectable function](#injectable-functions) that does the work and `$delay` is the number of milliseconds you would like to wait before the workflow is run after it is triggered.
 
 *Example Work Object*
 
@@ -41,6 +41,22 @@ The `run` is a decorator function for `add` that takes only an injectable functi
 ### next([err])
 
 `next` is an injectable variable offered in workflows that allows you to control when the next workflow is triggered or when the success and finally triggers are fired. `next()` does not block further execution of your workflow so next can be bound to DOM events, timers or placed in strategic areas of you code. If `next()` is passed a value, it will trigger an error and will stop Go, but will not stop the current workflow. You will have to execute `return next(err)` to stop Go and the workflow.
+
+### start()
+
+Starts the workflow registered with the Go instance
+
+### stop()
+
+Stops workflow from triggering
+
+### then([success], [failure])
+
+Registers success and failure callbacks. These are [injectable functions](#injectable-functions). The `failure` callback is allowed an `$error` object which is the `Error` that was thrown.
+
+### finally(callback)
+
+When all the work is done, success or failure, `callback` is called. The callback can also be an [injectable function](#injectable-functions).
 
 *Example*
 
@@ -77,13 +93,104 @@ go.run(['next', function(next) {
 go.start();
 ```
 
-## Dependecy Injection
+## Dependency Injection
 
-If you've ever used [AngularJS](https://www.angularjs.org/), then you won't have any problem with Go. There are some slight differences, as documented below, but for the most part, DI functions primarily the same way. The reason for this is to easily allow services to port into Go and to allow worflows created in Go to leverage the power of other libraries and frameworks.
+If you've ever used [AngularJS](https://www.angularjs.org/), then you won't have any problem with Go. There are some slight differences, as documented below, but for the most part, DI functions primarily the same way. The reason for this is to easily allow services to port into Go and to allow workflows created in Go to leverage the power of other libraries and frameworks.
+
+The way dependency injection works is: objects can be injected into a function once they are declared to Go. Injectable variables can be declared via a `provider`, `factory`, `service`, `value` or `constant` as described in [$provide](#$provide).
+
+### Auto-included Injectables
+
+Like Angular, Go makes its DI components available for injection.
+
+####$injector
+
+The `$injector` is the service in which all providers, services, factories, values, constants and decorators are registered within a Go instance. The `$injector` has the following methods:
+
+- `get(name, [caller])`: this method gets the instance of the service. The `caller` parameter is optional and is the calling function for use for error tracing.
+
+- `invoke(fn, [self], [locals])`: invoke is the function that creates the usable instance from an injectable function. `self` becomes `this` in the `fn` function. `locals` is a HashMap of variable names and values that override the `$injector`'s values for this invocation.
+
+- `has(name)`: determines if the `$injector` has the `name` service
+
+- `instantiate(Type, [locals])`: `Type` is an annotated constructor function. The `instantiate()` function creates a new instance of the `Type` constructor and returns it.
+
+- `annotate(fn, [strictDi])`: this method returns an array of the names which the `fn` function requires for injection.
+
+
+####$provide
+
+The `$provide` service is what registers the providers, services, factories, values, constants and decorators with the `$injector`.
+
+#####provider(name, provider)
+
+A `provider` is a constructor function which returns a `factory` object.
+
+#####factory(name, factory)
+
+A `factory` is an object that requires only one property, `$get`, whose value is an injectable function that is instantiated when an injectable function requests the factory by its name. The instantiated result is held in a cached object during runtime.
+
+#####service(name, service)
+
+A `service` is a the injectable function. The `service()` function, simply takes the `service` object and creates a `factory` object where the value of `$get` is the `service` parameter object.
+
+#####value(name, value)
+
+A `value` can be virtually anything. The `value()` function simply takes the `value` parameter and wraps it with a function which returns the `value` parameter and registers the new function within a `factory` in Go.
+
+#####constant(name, constant)
+
+The `constant()` function is just like `value()` except that once a `constant` is set, it can't be overridden, where a `value` can be changed.
+
+#####decorator(name, decorator) - coming soon
+
+A `decorator` is an injectable function which intercepts the creation of a `service` as referenced by the `name` parameter (so `name` is the name of the service you want to decorate, not the name of the `decorator`). A `decorator` can be injected with any available objects as well as a special object, `$delegate`, which is the original service instance, which can be altered or referenced via this `decorator`. A `decorator` must return the new or decorated instance to replace the `name` service.
+
+####$extend(obj1, obj2, [obj3...n])
+
+`$extend` is a utility function which deep copies properties from all items provided into the first argument item. If the first argument is `{}` then a new object is returned.
+
+####$go
+
+The current Go instance is made available as an injectable using the name `$go`. A Go instance extends `$provide`'s methods.
+
+#####Injectable Functions
+
+Functions can be injected with objects in three different ways (in order of preference):
+
+1. An array of the names of the objects to inject and the last item in the array is the function to inject into:
+
+```JavaScript
+['$injector', '$provide', function($injector, $provider) {
+    // Do stuff here
+}]
+```
+
+2. The `$inject` property set with an array of names:
+
+```JavaScript
+var myFunction = function($injector, $provide) {
+    // Do something
+};
+
+myFunction.$inject = ['$injector', '$provide'];
+```
+
+3. Lastly, the `$injector` can infer the names from the function itself. **This will not work on minifed scripts**
+
+```JavaScript
+var myFunction = function($injector, $provide) {
+    // Do more cool stuff, but not if you're going to minify this. Tsk tsk
+}
+```
 
 ### Modules
 
 Like AngularJS, you can extend the functionality of Go by loading in Modules. The creation of these modules is also very similar to AngularJS, but not as expansive. For instance, there's no need for directives or controllers, the 'Work' is essentially the controller.
+
+Modules are how to create reusable code that can be used on any Go instance. Modules can also provide a secure way for different Go instances to communicate with one-another.
+
+A module object, returned by `Go.Module()`, extends the same methods as [`provide`](#$provide) with the addition of a `config(fn)` method, which takes an injectable function as a parameter. The only reliable injectables in `config(fn)` are `$injector`, `$provide` and `$extend`. If the module depends on another module, then any injectables made available by the dependency module would also be available.
 
 A typical Module file would look like this:
 

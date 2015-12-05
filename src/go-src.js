@@ -22,7 +22,7 @@ var Go = function (requires) {
                 $injector.invoke(_modules[n]);
             }
         }
-    }
+    };
 
     $self.stopped = false;
 
@@ -54,7 +54,7 @@ var Go = function (requires) {
         $provide.constant(name, constant);
 
         return $self;
-    }
+    };
 
     $self.add = function(work) {
         if (!!work && !!work.$run) {
@@ -110,7 +110,7 @@ var Go = function (requires) {
                 }
                 else {
                     if (_success instanceof Function) {
-                        _success();
+                        $injector.invoke(success, $self);
                     }
                     if (_finally instanceof Function) {
                         _finally();
@@ -118,25 +118,25 @@ var Go = function (requires) {
                 }
             } catch($e) {
                 if (_failure instanceof Function) {
-                    _failure($e);
+                    $injector.invoke(failure, $self, {$error: $e});
                 }
                 if (_finally instanceof Function) {
-                    _finally();
+                    $injector.invoke(cb, $self);
                 }
             }
         }
 
         return $self;
-    }
+    };
 
     $self.then = function (success, failure) {
-        _success = $injector.invoke(success, $self);
-        _failure = $injector.invoke(failure, $self);
+        _success = success;
+        _failure = failure;
         return $self;
     };
 
     $self.finally = function (cb) {
-        _finally = $injector(cb, $self);
+        _finally = cb;
         return $self;
     };
 
@@ -174,7 +174,7 @@ Go.Extend = function() {
             return args[0];
         }
     }
-}
+};
 
 Go.Injector = function (locals) {
     var $self = this instanceof Go.Injector ? this : Object.create(Go.Injector.prototype),
@@ -195,7 +195,7 @@ Go.Injector = function (locals) {
 
         $inject = $self.annotate(fn);
 
-        var args = Array(),
+        var args = [],
             $inject,
             i,
             n;
@@ -291,13 +291,13 @@ Go.Provider = function() {
 
         var add = function(name, obj) {
             $injector.$services[name] = obj;
-        }
+        };
 
         var retVal = function (value) {
             return Function.prototype.bind.call(function() {
                 return this;
             }, value);
-        }
+        };
 
         $self.provider = function(name, provider) {
             if (provider instanceof Function ) {
@@ -408,19 +408,19 @@ Go.Module = function (name, requires) {
 
     $self.service = function(name, service) {
         _services[name] = service;
-    }
+    };
 
     $self.provider = function(name, provider) {
         _providers[name] = provider;
-    }
+    };
 
     $self.factory = function(name, factory) {
         _factories[name] = factory;
-    }
+    };
 
     $self.value = function (name, value) {
         _values[name] = value;
-    }
+    };
 
     $self.constant = function (name, constant) {
         if (!_constants[name]) {
