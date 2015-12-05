@@ -18,7 +18,7 @@
     "globals",
     "node"
   ],
-  "homepage": "http://www.alex-boyce.me/",
+  "homepage": "https://github.com/curiosity26/Go",
   "ignore": [
     "**/.*",
     "node_modules",
