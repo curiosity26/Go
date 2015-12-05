@@ -123,7 +123,7 @@ Like Angular, Go makes its DI components available for injection.
 
 #### $injector
 
-The `$injector` is the service in which all providers, services, factories, values, constants and decorators are registered within a Go instance. The `$injector` has the following methods:
+The `$injector` is the service in which all providers, services, factories, values, constants and decorators (injectables) are registered within a Go instance. The `$injector` has the following methods:
 
 ##### get(name, [caller])
 
@@ -146,43 +146,43 @@ A function to determine if the `$injector` has the `name` service.
 This method returns an array of the names which the `fn` function requires for injection.
 
 
-####$provide
+#### $provide
 
-The `$$provide` service is what registers the providers, services, factories, values, constants and decorators with the `$injector`.
+The `$$provide` service is what registers the providers, services, factories, values, constants and decorators (injectables) with the `$injector`.
 
-#####provider(name, provider)
+##### provider(name, provider)
 
 A `provider` is a constructor function which returns a `factory` object.
 
-#####factory(name, factory)
+##### factory(name, factory)
 
 A `factory` is an object that requires only one property, `$get`, whose value is an injectable function that is instantiated when an injectable function requests the factory by its name. The instantiated result is held in a cached object during runtime.
 
-#####service(name, service)
+##### service(name, service)
 
 A `service` is a the injectable function. The `service()` function, simply takes the `service` object and creates a `factory` object where the value of `$get` is the `service` parameter object.
 
-#####value(name, value)
+##### value(name, value)
 
 A `value` can be virtually anything. The `value()` function simply takes the `value` parameter and wraps it with a function which returns the `value` parameter and registers the new function within a `factory` in Go.
 
-#####constant(name, constant)
+##### constant(name, constant)
 
 The `constant()` function is just like `value()` except that once a `constant` is set, it can't be overridden, where a `value` can be changed.
 
-#####decorator(name, decorator)
+##### decorator(name, decorator)
 
 A `decorator` is an injectable function which intercepts the creation of a `service` as referenced by the `name` parameter (so `name` is the name of the service you want to decorate, not the name of the `decorator`). A `decorator` can be injected with any available objects as well as a special object, `$delegate`, which is the original service instance, which can be altered or referenced via this `decorator`. A `decorator` must return the new or decorated instance to replace the `name` service.
 
-####$extend(obj1, obj2, [obj3...n])
+#### $extend(obj1, obj2, [obj3...n])
 
 `$extend` is a utility function which deep copies properties from all items provided into the first argument item. If the first argument is `{}` then a new object is returned.
 
-####$go
+#### $go
 
 The current Go instance is made available as an injectable using the name `$go`. A Go instance extends `$provide`'s methods.
 
-#####Injectable Functions
+##### Injectable Functions
 
 Functions can be injected with objects in three different ways (in order of preference):
 
