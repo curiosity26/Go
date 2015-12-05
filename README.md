@@ -44,7 +44,7 @@ The `run` is a decorator function for `add` that takes only an injectable functi
 
 #### Asynchronous Work
 
-Technically, all work in Go is Asynchronous. If you inject `next()` into your work then Go will wait for you to call `next()` to proceed. If you *don't* inject it, then Go will call it for you directly after the work is invoked.
+Technically, all work in Go is Asynchronous. If you inject `next()` into your work then Go will wait for you to call `next()` to proceed. If you *don't* inject it, then Go will call it for you directly after the work is invoked, effectively running two work operations simultaneously. Essentially, you could call an entire batch of work to run independent of one another.
 
 ### start()
 
@@ -58,9 +58,15 @@ Stops workflow from triggering
 
 Registers success and failure callbacks. These are [injectable functions](#injectable-functions). The `failure` callback is allowed an `$error` object which is the `Error` that was thrown.
 
+Workflow that is triggered without injecting `next()`, aka 'asynchronous mode', cannot trigger the `failure` callback. Once all the work is triggered without any errors, the `success` callback will be triggered.
+
 ### finally(callback)
 
-When all the work is done, success or failure, `callback` is called. The callback can also be an [injectable function](#injectable-functions).
+When all the work has been triggered, success or failure, `callback` is called. The callback can also be an [injectable function](#injectable-functions).
+
+#### #FinallyNotFinally
+
+The `callback` can be fired before the work is complete if any asynchronous operations are still running after all the work has been triggered. If the last piece of work is injected `next()` then finally will wait for `next()` to be called from within the work, otherwise, once the last piece of work is triggered, `success` and `finally` will be triggered in that order. 
 
 *Example*
 
