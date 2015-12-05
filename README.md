@@ -95,9 +95,9 @@ go.start();
 
 ## Dependency Injection
 
-If you've ever used [AngularJS](https://www.angularjs.org/), then you won't have any problem with Go. There are some slight differences, as documented below, but for the most part, DI functions primarily the same way. The reason for this is to easily allow services to port into Go and to allow workflows created in Go to leverage the power of other libraries and frameworks.
+If you've ever used [Angular JS](https://www.angularjs.org/), then you won't have any problem with Go. There are some slight differences, as documented below, but for the most part, DI functions primarily the same way. The reason for this is to easily allow services to port into Go and to allow workflows created in Go to leverage the power of other libraries and frameworks.
 
-The way dependency injection works is: objects can be injected into a function once they are declared to Go. Injectable variables can be declared via a `provider`, `factory`, `service`, `value` or `constant` (aka injectables) as described in [$provide](#$provide).
+The way dependency injection works is: objects can be injected into a function once they are declared to Go. Injectable variables can be declared via a `provider`, `factory`, `service`, `value` or `constant` (aka injectables) as described in [$provide](#provide).
 
 ### Auto-included Injectables
 
@@ -190,7 +190,7 @@ Like AngularJS, you can extend the functionality of Go by loading in Modules. Th
 
 Modules are how to create reusable code that can be used on any Go instance. Modules can also provide a secure way for different Go instances to communicate with one-another.
 
-A module object, returned by `Go.Module()`, extends the same methods as [`$provide`](#$provide) with the addition of a `config(fn)` method, which takes an injectable function as a parameter. The only reliable injectables in `config(fn)` are `$injector`, `$provide` and `$extend`. If the module depends on another module, then any injectables made available by the dependency module would also be available.
+A module object, returned by `Go.Module()`, extends the same methods as [`$provide`](#provide) with the addition of a `config(fn)` method, which takes an injectable function as a parameter. The only reliable injectables in `config(fn)` are `$injector`, `$provide` and `$extend`. If the module depends on another module, then any injectables made available by the dependency module would also be available.
 
 A typical Module file would look like this:
 
