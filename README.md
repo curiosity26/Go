@@ -148,7 +148,7 @@ This method returns an array of the names which the `fn` function requires for i
 
 #### $provide
 
-The `$$provide` service is what registers the providers, services, factories, values, constants and decorators (injectables) with the `$injector`.
+The `$provide` service is what registers the providers, services, factories, values, constants and decorators (injectables) with the `$injector`.
 
 ##### provider(name, provider)
 
@@ -194,7 +194,7 @@ Functions can be injected with objects in three different ways (in order of pref
 }]
 ```
 
-2. The `$$inject` property set with an array of names:
+2. The `$inject` property set with an array of names:
 
 ```JavaScript
 var myFunction = function($injector, $provide) {
