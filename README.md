@@ -44,7 +44,9 @@ The `run` is a decorator function for `add` that takes only an injectable functi
 
 #### Asynchronous Work
 
-Technically, all work in Go is Asynchronous. If you inject `next()` into your work then Go will wait for you to call `next()` to proceed. If you *don't* inject it, then Go will call it for you directly after the work is invoked, effectively running two work operations simultaneously. Essentially, you could call an entire batch of work to run independent of one another.
+Technically, all work in Go is **asynchronous**. If you inject `next()` into your work then Go will wait for you to call `next()` to proceed. If you *don't* inject it, then Go will call it for you directly after the work is invoked, effectively running two work operations simultaneously. Essentially, you could call an entire batch of work to run independent of one another.
+
+The fact that all work in Go in asynchronous means that once `go.start()` is fired, it will not block the rest of your application script from running. Nothing should ever wait on Go that isn't supposed to.
 
 ### start()
 
@@ -66,7 +68,11 @@ When all the work has been triggered, success or failure, `callback` is called. 
 
 #### #FinallyNotFinally
 
-The `callback` can be fired before the work is complete if any asynchronous operations are still running after all the work has been triggered. If the last piece of work is injected `next()` then finally will wait for `next()` to be called from within the work, otherwise, once the last piece of work is triggered, `success` and `finally` will be triggered in that order. 
+In some cases, the *finally callback* can be fired before the work is complete. If any asynchronous operations are still running after all the work has been triggered or the last work operation is invoked *without* the `next()` injectable. 
+
+For instance, if Go is given three operations and the second operation is called asynchronously (without `next()`) and this operation takes longer to run than the third operation, then `finally()` would be fired before all the work is done.
+
+When the last piece of work is injected `next()` then finally will wait for `next()` to be called from within the work, otherwise, once the last piece of work is triggered, `success` and `finally` will be triggered, in that order, and the last piece of work could still be running.
 
 *Example*
 
