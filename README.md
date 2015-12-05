@@ -1,9 +1,9 @@
 # Go
 A procedural automation workflow framework, not to be confused with Facebook's Go language.
 
-Go makes it easy to create procedural jobs in javascript and run them in batch. By writing batch jobs that focus only on a particular task, and defining dependencies for the job to run, batch jobs can be reused and inconfigured easily in other batches.
+Go makes it easy to create procedural jobs in JavaScript and run them in batch. By writing batch jobs that focus only on a particular task, and defining dependencies for the job to run, batch jobs can be reused and reconfigured easily in other batches.
 
-Many aspects of Go have been designed to be familiar to the majority of JavaScript developers, especially AngularJS devs because the DI of Go is modeled after it.
+Many aspects of Go have been designed to be familiar to the majority of JavaScript developers, especially Angular JS devs, because the DI of Go is modeled after it.
 
 The main function of Go is a Constructor function, but the you don't have to use the `new` keyword to instatiate a new Go instance. Each Go instance is privately scoped for security, however, Go Modules are registered globally, so communication between Go instances can occur via a shared Module.
 
@@ -13,7 +13,7 @@ Go instances are also Promises. By using the functions `then(success, failure)` 
 
 Using Go is very easy. You don't need to preconfigure anything to get started. The only thing you need to know is how to register 'work'.
 
-Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run` is the [injectable function](#injectable-functions) that does the work and `$delay` is the number of milliseconds you would like to wait before the workflow is run after it is triggered.
+Every piece of 'work' is an object with 2 properties, `$run` and `$delay`. `$run` is the [injectable function](#injectable-functions) that does the work and `$delay` is the number of milliseconds you would like to wait before the workflow is run after it is triggered. The `$delay` property is optional by `$run` is required.
 
 *Example Work Object*
 
