@@ -42,6 +42,10 @@ The `run` is a decorator function for `add` that takes only an injectable functi
 
 `next` is an injectable variable offered in workflows that allows you to control when the next workflow is triggered or when the success and finally triggers are fired. `next()` does not block further execution of your workflow so next can be bound to DOM events, timers or placed in strategic areas of you code. If `next()` is passed a value, it will trigger an error and will stop Go, but will not stop the current workflow. You will have to execute `return next(err)` to stop Go and the workflow.
 
+#### Asynchronous Work
+
+Technically, all work in Go is Asynchronous. If you inject `next()` into your work then Go will wait for you to call `next()` to proceed. If you *don't* inject it, then Go will call it for you directly after the work is invoked.
+
 ### start()
 
 Starts the workflow registered with the Go instance
