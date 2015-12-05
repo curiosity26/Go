@@ -142,7 +142,7 @@ A `value` can be virtually anything. The `value()` function simply takes the `va
 
 The `constant()` function is just like `value()` except that once a `constant` is set, it can't be overridden, where a `value` can be changed.
 
-#####decorator(name, decorator) - coming soon
+#####decorator(name, decorator)
 
 A `decorator` is an injectable function which intercepts the creation of a `service` as referenced by the `name` parameter (so `name` is the name of the service you want to decorate, not the name of the `decorator`). A `decorator` can be injected with any available objects as well as a special object, `$delegate`, which is the original service instance, which can be altered or referenced via this `decorator`. A `decorator` must return the new or decorated instance to replace the `name` service.
 

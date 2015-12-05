@@ -180,7 +180,8 @@ Go.Injector = function (locals) {
     var $self = this instanceof Go.Injector ? this : Object.create(Go.Injector.prototype),
         $cache = {};
 
-    $self.$services = locals || {};
+    $self.$services = !!locals && typeof locals == 'object' && locals || {};
+    $self.$decorators = {};
 
     if (!$self.$services.hasOwnProperty('$injector')) {
         $self.$services.$injector = {$get: function() { return $self; }};
@@ -255,7 +256,14 @@ Go.Injector = function (locals) {
                     : $self.$services[name],
                 f = !!service.$get && service.$get || $self.instantiate(service).$get;
 
-            return $cache[name] = $self.invoke(f, !!caller && caller);
+            $delegate = $self.invoke(f, !!caller && caller);
+
+            if ($self.$decorators.hasOwnProperty(name)) {
+                $decorator = $self.$decorators[name];
+                return $cache[name] = $self.invoke($decorator, caller, {'$delegate': $delegate});
+            }
+
+            return $cache[name] = $delegate;
         }
 
         throw new Error("Unable to find variable or service with the name: " + name);
@@ -337,6 +345,10 @@ Go.Provider = function() {
             }
 
             return $self;
+        };
+
+        $self.decorator = function(name, fn) {
+            $injector.$decorators[name] = fn;
         };
 
         $self.value('$provide', $self);
