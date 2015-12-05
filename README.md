@@ -182,7 +182,7 @@ A `decorator` is an injectable function which intercepts the creation of a `serv
 
 The current Go instance is made available as an injectable using the name `$go`. A Go instance extends `$provide`'s methods.
 
-##### Injectable Functions
+#### Injectable Functions
 
 Functions can be injected with objects in three different ways (in order of preference):
 
