@@ -118,7 +118,7 @@ The `$injector` is the service in which all providers, services, factories, valu
 - `annotate(fn, [strictDi])`: this method returns an array of the names which the `fn` function requires for injection.
 
 
-####$$provide
+####$provide
 
 The `$$provide` service is what registers the providers, services, factories, values, constants and decorators with the `$injector`.
 
