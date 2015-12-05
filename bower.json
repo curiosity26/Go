@@ -10,7 +10,8 @@
     "automation",
     "procedural",
     "batch",
-    "workflow"
+    "workflow",
+    "go.js"
   ],
   "moduleType": [
     "es6",
