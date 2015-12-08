@@ -362,6 +362,7 @@ Go.Provider = function() {
 };
 
 Go.Module = function (name, requires) {
+    requires = requires || [];
 
     var $self = this instanceof Go.Module ? this : Object.create(Go.Module.prototype),
         _config,
