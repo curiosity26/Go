@@ -416,28 +416,40 @@ Go.Module = function (name, requires) {
 
     $self.config = function(config) {
         _config = config;
+
+        return $self;
     };
 
     $self.service = function(name, service) {
         _services[name] = service;
+
+        return $self;
     };
 
     $self.provider = function(name, provider) {
         _providers[name] = provider;
+
+        return $self;
     };
 
     $self.factory = function(name, factory) {
         _factories[name] = factory;
+
+        return $self;
     };
 
     $self.value = function (name, value) {
         _values[name] = value;
+
+        return $self;
     };
 
     $self.constant = function (name, constant) {
         if (!_constants[name]) {
             _constants[name] = constant;
         }
+
+        return $self;
     };
 
     _modules[name] = $module;
