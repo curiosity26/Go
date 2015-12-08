@@ -256,7 +256,7 @@ Go.Injector = function (locals) {
                     : $self.$services[name],
                 f = !!service.$get && service.$get || $self.instantiate(service).$get;
 
-            $delegate = $self.invoke(f, !!caller && caller);
+            var $delegate = $self.invoke(f, !!caller && caller);
 
             if ($self.$decorators.hasOwnProperty(name)) {
                 $decorator = $self.$decorators[name];
