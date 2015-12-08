@@ -308,7 +308,8 @@ Go.Provider = function() {
         };
 
         $self.provider = function(name, provider) {
-            if (provider instanceof Function ) {
+            if (provider instanceof Function 
+                || (provider instanceof Array && provider[provider.length - 1] instanceof Function)) {
                 add(name + 'Provider', {
                     $get: provider
                 });
