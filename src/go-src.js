@@ -80,8 +80,14 @@ var Go = function (requires) {
         return $self.next();
     };
 
+    $self.pause = function() {
+        $self.stopped = true;
+        return $self;
+    }
+
     $self.stop = function () {
         $self.stopped = true;
+        $index = -1;
         return $self;
     };
 
@@ -248,15 +254,12 @@ Go.Injector = function (locals) {
         }
 
         if (!!$self.$services[name] || !!$self.$services[name + 'Provider']) {
-            var provider = $self.$services[name + 'Provider'];
-
-            var
+            var provider = $self.$services[name + 'Provider'],
                 service = !!provider 
                     ? $cache[name + 'Provider'] = $self.invoke(provider) 
                     : $self.$services[name],
-                f = !!service.$get && service.$get || $self.instantiate(service).$get;
-
-            var $delegate = $self.invoke(f, !!caller && caller);
+                f = !!service.$get && service.$get || $self.instantiate(service).$get,
+                $delegate = $self.invoke(f, !!caller && caller);
 
             if ($self.$decorators.hasOwnProperty(name)) {
                 $decorator = $self.$decorators[name];
