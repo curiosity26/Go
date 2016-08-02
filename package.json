@@ -1,12 +1,12 @@
 {
   "name": "go",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A procedural automation workflow framework",
-  "main": "dist/index.min.js",
+  "main": "src/go.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
-  "repository": "curiosity26/go#0.0.1",
+  "repository": "curiosity26/go#0.0.2",
   "keywords": [
     "automation",
     "procedural",
@@ -16,9 +16,12 @@
   "author": "Alex Boyce <curiosity26@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-      "gulp" : "*",
-      "gulp-uglify" : "*",
-      "gulp-rename" : "*",
-      "gulp-replace": "*"
+    "gulp": "*",
+    "gulp-browserify": "^0.5.1",
+    "gulp-rename": "*",
+    "gulp-replace": "*",
+    "gulp-uglify": "*",
+    "mocha": "*",
+    "should": "*"
   }
 }
