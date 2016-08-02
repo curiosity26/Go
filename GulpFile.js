@@ -5,13 +5,13 @@ var browserify = require('gulp-browserify');
 var fs = require("fs");
 
 gulp.task('minify-web', function() {
-    return gulp.src('./src/go.js')
+    return gulp.src('./src/exports.js')
         .pipe(browserify({
             insertGlobals : true,
             debug : true
         }))
         .pipe(uglify())
-        .pipe(rename({ extname: '.min.js' }))
+        .pipe(rename({ basename: 'go', extname: '.min.js' }))
         .pipe(gulp.dest('./dist'));
 });
 

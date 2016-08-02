@@ -1,0 +1,1 @@
+window.Go = window.Go || require('./go.js');
